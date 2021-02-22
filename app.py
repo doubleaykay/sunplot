@@ -17,7 +17,7 @@ def checkbox(val):
     return False
 
 # generation route
-@app.route('/generate')
+@app.route('/generate', methods = ['POST', 'GET'])
 def generate():
   # get arguments
   year = int(request.args.get('year'))
@@ -39,11 +39,11 @@ def generate():
   pixels = stack_rgb(r, g, b)
   gen_png_to_stream(pixels, width, height, fp_img)
 
+  # seek pointer to beginning before sending to client
   fp_img.seek(0)
 
-  # return Response(fp_img, mimetype="image/png", headers={"Content-Disposition":"attachment;filename=image.png"})
+  # send generated image to client
   return Response(fp_img, mimetype="image/png")
-  # return f'This is the generator route {year}, {lat}, {lon}, {width}, {height}, {use_dst}, {sunrise_jump}, {hue_shift}'
 
 # run server
 if __name__ == '__main__':

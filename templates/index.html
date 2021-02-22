@@ -68,45 +68,41 @@
                         <label for="input_year">Year</label>
                     </div>
 
-                    <!-- image title
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="input_title" placeholder="Title">
-                        <label for="input_title">Image Title</label>
-                    </div> -->
-
                     <!-- location -->
                     <div class="input-group mb-3">
                         <span class="input-group-text">Latitude</span>
-                        <input type="text" aria-label="Latitude" class="form-control" name="lat">
+                        <input type="text" aria-label="Latitude" class="form-control" name="lat" id="imput_lat">
                         <span class="input-group-text">Longitude</span>
-                        <input type="text" aria-label="Longitude" class="form-control" name="lon">
+                        <input type="text" aria-label="Longitude" class="form-control" name="lon" id="imput_lon">
                     </div>
 
                     <!-- image dimensions -->
                     <div class="input-group mb-3">
                         <span class="input-group-text">Width</span>
-                        <input type="number" aria-label="Width" class="form-control" value="1920" name="width">
+                        <input type="number" aria-label="Width" class="form-control" value="1920" name="width"
+                            id="input_width">
                         <span class="input-group-text">Height</span>
-                        <input type="number" aria-label="Height" class="form-control" value="1080" name="height">
+                        <input type="number" aria-label="Height" class="form-control" value="1080" name="height"
+                            id="input_height">
                     </div>
 
                     <!-- daylight savings -->
                     <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="dst" checked>
+                        <input type="checkbox" class="form-check-input" id="input_dst" name="dst" checked>
                         <label class="form-check-label" for="exampleCheck1">Consider Daylight Savings</label>
                     </div>
 
                     <!-- sunrise jump -->
                     <div class="input-group mb-3">
                         <label for="range_sunrise_jump" class="form-label">Sunrise Jump</label>
-                        <input type="range" class="form-range" min="0" max="1" step="0.1" id="range_sunrise_jump"
+                        <input type="range" class="form-range" min="0" max="1" step="0.1" id="input_sunrise_jump"
                             value="0.3" name="sunrise_jump">
                     </div>
 
                     <!-- hue shift -->
                     <div class="input-group mb-3">
                         <label for="range_hue_shift" class="form-label">Hue Shift</label>
-                        <input type="range" class="form-range" min="0" max="1" step="0.1" id="range_hue_shift"
+                        <input type="range" class="form-range" min="0" max="1" step="0.1" id="input_hue_shift"
                             value="0.0" name="hue_shift">
                     </div>
 
@@ -115,10 +111,10 @@
                 </form>
             </div>
         </div>
-        <!-- <div class="row">
-            <p>this is where the generated image will go</p>
-            <img src="https://www.fpchudson.net/wp-content/uploads/sample-mage.jpg" class="rounded img-fluid" alt="...">
-        </div> -->
+        <div class="row">
+            <p id="response_img_title" class="mb-3" style="visibility: hidden;">Generated Image:</p>
+            <img src="..." class="img-fluid mb-3" alt="..." id="response_img" style="visibility: hidden;">
+        </div>
     </div>
 
     <!-- Optional JavaScript; choose one of the two! -->
@@ -144,41 +140,61 @@
             // delete previous marker layer if it exists
             if (map.hasLayer(marker)) {
                 map.removeLayer(marker);
-            }
+            };
 
             // add marker to map
             marker = L.marker([lat, lon]).addTo(map);
 
             // send lat, lon to form
-            console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
+            document.getElementById("imput_lon").value = lon;
+            document.getElementById("imput_lat").value = lat;
+            // console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
         });
 
         // intercept and handle form submission manually
-        const form = document.querySelector('form')
+        // var glob;
+        const form = document.querySelector('form');
+        // const XHR = new XMLHttpRequest();
         form.addEventListener('submit', event => {
             // submit event detected
             // prevent default action
             event.preventDefault()
             console.log('caught');
 
-            // get and validate form data
-            const formData = new FormData(form)
-            for (var pair of formData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
-            }
+            // get form data manually
+            year = document.getElementById("input_year").value;
+            lon = document.getElementById("imput_lon").value;
+            lat = document.getElementById("imput_lat").value;
+            width = document.getElementById("input_width").value;
+            height = document.getElementById("input_height").value;
+            use_dst = document.getElementById("input_dst").value;
+            sunrise_jump = document.getElementById("input_sunrise_jump").value;
+            hue_shift = document.getElementById("input_hue_shift").value;
 
-            // hit api and get image back
-            // fetch(fetchURL + image)
-            //     .then(response => response.blob())
-            //     .then(images => {
-            //         // Then create a local URL for that image and print it 
-            //         outside = URL.createObjectURL(images)
-            //         console.log(outside)
-            //     })
-            // if image already present, clear it
-            // populate image in page
-            // scroll to image
-        })
+            // build GET request URL
+            url = "/generate" + "?" +
+                "year=" + year +
+                "&lon=" + lon +
+                "&lat=" + lat +
+                "&width=" + width +
+                "&height=" + height +
+                "&use_dst=" + use_dst +
+                "&sunrise_jump=" + sunrise_jump +
+                "&hue_shift=" + hue_shift
+
+            // hit api
+            fetch(url)
+                .then(response => response.blob())
+                .then(image => {
+                    var urlCreator = window.URL || window.webkitURL;
+                    var imageUrl = urlCreator.createObjectURL(image);
+
+                    document.querySelector("#response_img").src = imageUrl;
+                    document.getElementById("response_img_title").style.visibility = "visible";
+                    document.getElementById("response_img").style.visibility = "visible";
+                    document.getElementById("response_img").scrollIntoView();
+                });
+        });
     </script>
 
 </body>
