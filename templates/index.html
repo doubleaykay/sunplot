@@ -60,38 +60,39 @@
                 <div id="mapid" style="height: 500px" class="mb-3"></div>
             </div>
             <div class="col-sm">
-                <form>
+                <form action="/generate" method="get">
                     <!-- year -->
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="input_year" placeholder="2021" value="2021">
+                        <input type="number" class="form-control" id="input_year" placeholder="2021" value="2021"
+                            name="year">
                         <label for="input_year">Year</label>
                     </div>
 
-                    <!-- image title -->
+                    <!-- image title
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="input_title" placeholder="Title">
                         <label for="input_title">Image Title</label>
-                    </div>
+                    </div> -->
 
                     <!-- location -->
                     <div class="input-group mb-3">
                         <span class="input-group-text">Latitude</span>
-                        <input type="text" aria-label="Latitude" class="form-control">
+                        <input type="text" aria-label="Latitude" class="form-control" name="lat">
                         <span class="input-group-text">Longitude</span>
-                        <input type="text" aria-label="Longitude" class="form-control">
+                        <input type="text" aria-label="Longitude" class="form-control" name="lon">
                     </div>
 
                     <!-- image dimensions -->
                     <div class="input-group mb-3">
                         <span class="input-group-text">Width</span>
-                        <input type="number" aria-label="Width" class="form-control" value="1920">
+                        <input type="number" aria-label="Width" class="form-control" value="1920" name="width">
                         <span class="input-group-text">Height</span>
-                        <input type="number" aria-label="Height" class="form-control" value="1080">
+                        <input type="number" aria-label="Height" class="form-control" value="1080" name="height">
                     </div>
 
                     <!-- daylight savings -->
                     <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1" checked>
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="dst" checked>
                         <label class="form-check-label" for="exampleCheck1">Consider Daylight Savings</label>
                     </div>
 
@@ -99,14 +100,14 @@
                     <div class="input-group mb-3">
                         <label for="range_sunrise_jump" class="form-label">Sunrise Jump</label>
                         <input type="range" class="form-range" min="0" max="1" step="0.1" id="range_sunrise_jump"
-                            value="0.3">
+                            value="0.3" name="sunrise_jump">
                     </div>
 
                     <!-- hue shift -->
                     <div class="input-group mb-3">
                         <label for="range_hue_shift" class="form-label">Hue Shift</label>
                         <input type="range" class="form-range" min="0" max="1" step="0.1" id="range_hue_shift"
-                            value="0.0">
+                            value="0.0" name="hue_shift">
                     </div>
 
                     <!-- generate button -->
@@ -114,10 +115,10 @@
                 </form>
             </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <p>this is where the generated image will go</p>
             <img src="https://www.fpchudson.net/wp-content/uploads/sample-mage.jpg" class="rounded img-fluid" alt="...">
-        </div>
+        </div> -->
     </div>
 
     <!-- Optional JavaScript; choose one of the two! -->
@@ -153,6 +154,13 @@
         });
 
         // hit api and get image back
+        // fetch(fetchURL + image)
+        //     .then(response => response.blob())
+        //     .then(images => {
+        //         // Then create a local URL for that image and print it 
+        //         outside = URL.createObjectURL(images)
+        //         console.log(outside)
+        //     })
         // populate image in page
         // scroll to image
     </script>
