@@ -12,9 +12,9 @@ def main():
 
 # quick handle checkboxes
 def checkbox(val):
-  if val == 'on':
+  if val == 'true':
     return True
-  else:
+  elif val == 'false':
     return False
 
 # generation route
@@ -26,7 +26,7 @@ def generate():
   lon = float(request.args.get('lon'))
   width = int(request.args.get('width'))
   height = int(request.args.get('height'))
-  use_dst = checkbox(request.args.get('dst'))
+  use_dst = checkbox(request.args.get('use_dst'))
   sunrise_jump = float(request.args.get('sunrise_jump'))
   hue_shift = float(request.args.get('hue_shift'))
 
