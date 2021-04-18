@@ -10,3 +10,6 @@ Web app front-end for Shams.
 * `python3 -m venv env`
 * `source env/bin/activate`
 * `pip3 install requirements.txt`
+
+## Resources Used
+https://dev.to/erenaspire7/deploying-a-dockerized-flask-app-to-heroku-5h7j
